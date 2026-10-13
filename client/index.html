@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#07140c" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>暴走台球</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@500;700&family=Oswald:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="view"></canvas>
+      <div id="grade" aria-hidden="true"></div>
+      <div id="vignette" aria-hidden="true"></div>
+      <div id="chain-overlay" aria-hidden="true"></div>
+
+      <section id="title-screen" class="screen">
+        <div class="screen-inner">
+          <p class="eyebrow">EIGHT BALL · CLUB EDITION</p>
+          <img class="emblem" src="/emblem.jpg" alt="" />
+          <h1>暴走台球</h1>
+          <p class="lede">
+            娱乐八球：分全色与花色，进本组球可连杆；清完本组再打黑 8（可与最后一颗本组球同杆打进）。联机犯规给对手自由球，单人犯规后白球自动回到开球位置。保留增强与使坏卡。
+          </p>
+          <ul class="controls desk">
+            <li><kbd>LMB</kbd> 按住蓄力，松手开球</li>
+            <li>鼠标左右瞄准、上下调抬杆角度；镜头跟在白球后方</li>
+            <li>开球后顺着出杆方向固定全局俯看，停稳再回到击球位</li>
+            <li><kbd>Q E</kbd> / <kbd>A D</kbd> 微调左右 · <kbd>W S</kbd> / <kbd>↑ ↓</kbd> 调抬杆角度 · 滚轮远近</li>
+            <li>联机自由球时，点击台内空位摆放白球</li>
+            <li><kbd>R</kbd> 复位击球视角 · <kbd>V</kbd> 高位观察</li>
+            <li><kbd>1 2 3</kbd> 选增强 · <kbd>Esc</kbd> 暂停 · 退出回到主界面 · <kbd>M</kbd> 静音</li>
+          </ul>
+          <ul class="controls touch-help">
+            <li>单指左右滑动瞄准，上下滑动调抬杆角度</li>
+            <li>按住「蓄力」再松开开球</li>
+            <li>左右键微调方向，「抬高／压低」调角度；联机自由球时点台面摆球</li>
+            <li>双指拖动转镜头，捏合缩放</li>
+            <li>单人每合法进 3 球抽卡，联机每累计 6 杆抽卡</li>
+            <li>点「横屏」切到横屏，竖着也能玩</li>
+            <li>点「退出」回到主界面</li>
+          </ul>
+          <div class="actions">
+            <button type="button" id="btn-landscape" class="ghost">横屏</button>
+            <button type="button" id="btn-start" class="primary">单人练习 / PRACTICE</button>
+            <button type="button" id="btn-online" class="ghost">联机对战</button>
+            <button type="button" id="btn-settings" class="ghost">设置</button>
+            <button type="button" data-mute class="ghost">SOUND ON</button>
+          </div>
+          <div id="online-box" class="hidden">
+            <input id="online-name" maxlength="16" placeholder="名字" aria-label="玩家名字" autocomplete="off" />
+            <input id="online-room" maxlength="4" placeholder="4 位房间码，可留空" aria-label="房间码" inputmode="text" autocapitalize="characters" autocomplete="off" spellcheck="false" />
+            <button type="button" id="btn-online-go" class="primary">进入房间</button>
+            <p class="fineprint">房间存在就加入，不存在就创建；留空随机开房。5 分钟无出杆、摆球或选卡自动释放。</p>
+            <p id="online-msg" class="fineprint"></p>
+          </div>
+          <p id="title-best" class="fineprint"></p>
+        </div>
+      </section>
+
+      <div id="hud" class="hidden">
+        <div class="hud-top">
+          <div class="frame meters">
+            <span id="hud-wave">第 1 波</span>
+            <small id="hud-score-label">累计得分</small>
+            <b id="hud-score">000000</b>
+            <div id="hud-lives" class="lives"></div>
+          </div>
+          <div id="hud-online" class="hidden" aria-label="对局比分">
+            <div class="rival-score" id="score-you"><span class="player-name"></span><b class="pocket-count">0<small>/ 8</small></b><span class="player-points">0 分</span><span class="last-card"></span><i class="pocket-progress"></i></div>
+            <span class="versus-divider">VS</span>
+            <div class="rival-score" id="score-foe"><span class="player-name"></span><b class="pocket-count">0<small>/ 8</small></b><span class="player-points">0 分</span><span class="last-card"></span><i class="pocket-progress"></i></div>
+          </div>
+          <span id="hud-remain" class="frame chip">15 球</span>
+        </div>
+        <div id="placing-tip" class="hidden"><strong>自由球</strong><span>点击台面空位摆放白球 · 避开彩球和袋口</span></div>
+        <p id="hud-status">…</p>
+        <p id="hud-rule"></p>
+        <div id="hud-notices" aria-live="polite" aria-atomic="false"></div>
+        <p id="hud-combo" class="combo hidden"></p>
+        <div class="hud-bottom">
+          <div id="hud-mods"></div>
+          <div class="hud-actions">
+            <button type="button" id="btn-hud-pause" class="ghost mini touch-only">暂停</button>
+            <button type="button" id="btn-hud-camera" class="ghost mini" aria-pressed="false" title="切换全桌视角（V）">全桌</button>
+            <button type="button" id="btn-hud-settings" class="ghost mini">设置</button>
+            <button type="button" id="btn-exit" class="ghost mini">退出</button>
+            <button type="button" data-mute class="ghost mini">SOUND ON</button>
+          </div>
+        </div>
+        <div id="power-wrap" class="hidden">
+          <span>力度</span>
+          <div class="bar"><i id="power-fill"></i></div>
+        </div>
+      </div>
+
+      <button type="button" id="btn-float-landscape" class="ghost">横屏</button>
+
+      <section id="upgrade-screen" class="screen hidden">
+        <div class="screen-inner wide">
+          <p class="eyebrow" id="upgrade-eyebrow">EVERY 3 BALLS</p>
+          <h2 id="upgrade-title">进三球 · 抽一张卡</h2>
+          <div id="upgrade-cards" class="cards"></div>
+          <p class="fineprint" id="upgrade-note">每合法打进 3 颗球抽一张。点选，或按 1 / 2 / 3。</p>
+          <div class="actions">
+            <button type="button" id="btn-exit-upgrade" class="ghost">返回主界面</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="pause-screen" class="screen hidden">
+        <div class="screen-inner">
+          <p class="eyebrow">CAGE HOLD</p>
+          <h2>暂停</h2>
+          <p id="pause-rule" class="lede"></p>
+          <div class="actions">
+            <button type="button" id="btn-resume" class="primary">继续</button>
+            <button type="button" id="btn-pause-landscape" class="ghost">横屏</button>
+            <button type="button" id="btn-pause-settings" class="ghost">设置</button>
+            <button type="button" id="btn-exit-pause" class="ghost">返回主界面</button>
+            <button type="button" data-mute class="ghost">SOUND ON</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="settings-screen" class="screen hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+        <div class="screen-inner settings-panel">
+          <div class="settings-header">
+            <div><p class="eyebrow">SETTINGS</p><h2 id="settings-title">设置</h2></div>
+            <button type="button" id="btn-settings-back" class="ghost">返回</button>
+          </div>
+          <h3 class="settings-label" id="quality-label">画质</h3>
+          <div class="quality-options" role="group" aria-labelledby="quality-label">
+            <button type="button" id="quality-high" class="quality-option" aria-pressed="true">
+              <strong>高画质</strong><span>完整光影，保留细节</span><small class="quality-check" aria-hidden="true">已选择 ✓</small>
+            </button>
+            <button type="button" id="quality-balanced" class="quality-option" aria-pressed="false">
+              <strong>均衡</strong><span>画质与流畅兼顾</span><small class="quality-check" aria-hidden="true">已选择 ✓</small>
+            </button>
+            <button type="button" id="quality-smooth" class="quality-option" aria-pressed="false">
+              <strong>流畅</strong><span>简化阴影与特效</span><small class="quality-check" aria-hidden="true">已选择 ✓</small>
+            </button>
+          </div>
+          <p class="settings-help">立即生效，记住本机选择。画质由你决定，不会自动切换。</p>
+          <p id="settings-match-note" class="fineprint"></p>
+        </div>
+      </section>
+
+      <section id="over-screen" class="screen hidden">
+        <div class="screen-inner">
+          <p class="eyebrow">RUN ENDED</p>
+          <h1 id="over-title">这局结束</h1>
+          <p id="over-lead" class="lede"></p>
+          <pre id="over-log" class="log"></pre>
+          <p id="over-rematch-note" class="lede hidden" aria-live="polite"></p>
+          <div class="actions">
+            <button type="button" id="btn-again" class="primary">再来一局</button>
+            <button type="button" id="btn-exit-over" class="ghost">返回主界面</button>
+          </div>
+        </div>
+      </section>
+
+      <div id="touch-pad">
+        <button type="button" id="touch-left" class="touch-nudge">左转</button>
+        <button type="button" id="touch-loft-down" class="touch-nudge" aria-label="降低抬杆角度">压低</button>
+        <button type="button" id="touch-charge" class="touch-charge">按住蓄力</button>
+        <button type="button" id="touch-loft-up" class="touch-nudge" aria-label="提高抬杆角度">抬高</button>
+        <button type="button" id="touch-right" class="touch-nudge">右转</button>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

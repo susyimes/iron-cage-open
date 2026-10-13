@@ -1,0 +1,24 @@
+{
+  "name": "iron-cage",
+  "private": true,
+  "version": "0.1.0",
+  "description": "暴走台球 — 3D eight-ball with upgrade cards",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w client",
+    "dev:server": "npm run dev -w server",
+    "build": "npm run build -w client",
+    "start": "npm run start -w server",
+    "preview": "npm run preview -w client",
+    "typecheck": "tsc -p client --noEmit && tsc -p server --noEmit",
+    "test:online": "npm run test -w server && tsx scripts/client-sync-selftest.ts && tsx scripts/aim-selftest.ts",
+    "test:visual": "tsx scripts/visual-selftest.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}
