@@ -71,3 +71,19 @@ TypeScript、Three.js、Vite；Node.js + `ws` 提供房间服务。`client/src/g
 本仓库从已清理的当前文件建立独立 Git 历史；原私库与原工作区保留。
 
 2026-10-13 清理公开版验证：npm run build 通过，真实浏览器单人开球通过；没有缺失资源、旧音乐请求或页面异常。原实机截图中的图像资源仍随公开版保留。
+
+
+### Languages / 语言
+
+English and Simplified Chinese are available from the title screen and Settings
+(English / 简体中文). On first launch the browser's highest-priority supported language is used:
+Chinese (`zh-*`) selects 简体中文 and English (`en-*`) selects English.
+If neither appears in the preference list, English is the fallback. The choice is
+saved locally under `iron-cage-language` when browser storage is available.
+Switching updates the current menus, HUD, notices and offered cards without
+resetting the match, camera, score, upgrades or online connection. The same
+selection works in the static itch build; online availability depends on hosting.
+Legacy Chinese rules and server messages are translated at explicit client
+presentation sites; protocol fields, names, card IDs and save formats stay intact.
+The club wall crest and image assets retain their original branding.
+Run `npm run test:i18n` for preference, storage, catalog and message checks.

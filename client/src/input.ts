@@ -174,7 +174,10 @@ export class Input {
   };
 
   private onKey = (e: KeyboardEvent): void => {
-    if (e.target instanceof HTMLElement && e.target.closest("input, textarea, [contenteditable=true]")) return;
+    // Native controls own their keyboard activation/editing, including language buttons.
+    // Keyup remains global so a game key held before focus moved still gets released.
+    if (e.target instanceof HTMLElement && (e.target.isContentEditable ||
+      e.target.closest("button, input, select, textarea, a[href], [role=button]"))) return;
     if (e.code === "Space" || e.code.startsWith("Arrow")) e.preventDefault();
     if (e.repeat) return;
     this.keys.add(e.code);

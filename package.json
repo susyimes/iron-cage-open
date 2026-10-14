@@ -15,7 +15,8 @@
     "preview": "npm run preview -w client",
     "typecheck": "tsc -p client --noEmit && tsc -p server --noEmit",
     "test:online": "npm run test -w server && tsx scripts/client-sync-selftest.ts && tsx scripts/aim-selftest.ts",
-    "test:visual": "tsx scripts/visual-selftest.ts"
+    "test:visual": "tsx scripts/visual-selftest.ts",
+    "test:i18n": "tsx scripts/i18n-selftest.ts"
   },
   "engines": {
     "node": ">=20"

@@ -1,3 +1,4 @@
+import { initializeLocale } from "./i18n.ts";
 import { Game } from "./game/game.ts";
 import { Ui } from "./ui.ts";
 
@@ -15,6 +16,7 @@ coarse.addEventListener("change", syncTouchUi);
 window.addEventListener("resize", syncTouchUi);
 window.addEventListener("orientationchange", syncTouchUi);
 
+initializeLocale();
 const game = new Game(canvas);
 const ui = new Ui();
 

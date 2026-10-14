@@ -931,3 +931,17 @@ body.touch-ui.portrait.playing.show-ls-tip #btn-float-landscape {
 @media (orientation: landscape) and (max-height: 560px) {
   .last-card { font-size: 10px; }
 }
+
+/* Locale controls stay reachable on title and within the settings dialog. */
+.language-options { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0; }
+.language-options button { min-height:44px; padding:8px 14px; }
+.language-options button[aria-pressed="true"] { border-color:var(--hazard); color:var(--hazard); }
+html[lang="en"] h1 { font-size:clamp(30px, 7vw, 52px); overflow-wrap:anywhere; }
+html[lang="en"] .card h3, html[lang="en"] .card p { overflow-wrap:anywhere; }
+html[lang="en"] #placing-tip { white-space:normal; max-width:calc(100vw - 32px); }
+html[lang="en"] .last-card { white-space:normal; }
+html[lang="en"] .pocket-count { white-space:normal; flex-wrap:wrap; }
+html[lang="en"] .touch-nudge { font-size:12px; letter-spacing:0; }
+html[lang="en"] #hud-mods .chip { white-space:normal; }
+
+html[lang="en"] .card .en { display:none; }
