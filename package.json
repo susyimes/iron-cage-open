@@ -16,7 +16,10 @@
     "typecheck": "tsc -p client --noEmit && tsc -p server --noEmit",
     "test:online": "npm run test -w server && tsx scripts/client-sync-selftest.ts && tsx scripts/aim-selftest.ts",
     "test:visual": "tsx scripts/visual-selftest.ts",
-    "test:i18n": "tsx scripts/i18n-selftest.ts"
+    "test:i18n": "tsx scripts/i18n-selftest.ts",
+    "build:toy": "npm run build -w client -- --mode toy",
+    "package:toy": "npm run build:toy && python scripts/package-toy.py",
+    "test:toy": "python scripts/test-toy-package.py"
   },
   "engines": {
     "node": ">=20"

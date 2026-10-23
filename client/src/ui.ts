@@ -1,6 +1,7 @@
 import { t, getLocale, setLocale, paintStatic, type Locale } from "./i18n.ts";
 import type { Game, Hud } from "./game/game.ts";
 import { Online } from "./net.ts";
+import { TOY_BUILD } from "./distribution.ts";
 import { VERSUS_CARDS, type UpgradeId } from "./game/upgrades.ts";
 import { groupName, groupOf, targetText } from "./game/rules.ts";
 import { QUALITY_LEVELS } from "./game/quality.ts";
@@ -92,9 +93,11 @@ export class Ui {
       }, 60);
     });
     el("btn-online").addEventListener("click", () => {
+      if (TOY_BUILD) return;
       el("online-box").classList.toggle("hidden");
     });
     el("btn-online-go").addEventListener("click", () => {
+      if (TOY_BUILD) return;
       void game.audio.unlock();
       const name = (document.getElementById("online-name") as HTMLInputElement | null)?.value.trim() || t("玩家");
       const room = (document.getElementById("online-room") as HTMLInputElement | null)?.value.trim() || "";

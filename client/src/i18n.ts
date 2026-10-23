@@ -3,6 +3,7 @@
 export type Locale = "en" | "zh-CN";
 export const LANGUAGE_KEY = "iron-cage-language";
 export const english: Readonly<Record<string, string>> = {
+  "Toy 单机版 · 无需登录，纪录与设置保存在本机": "Toy solo edition · No sign-in. Records and settings stay on this device.",
   "此版本不提供联机": "Online unavailable in this edition",
   "第 1 波": "Practice",
   "0 分": "0 pts",

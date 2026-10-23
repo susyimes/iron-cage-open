@@ -44,6 +44,10 @@ export class AudioBus {
     return this.muted;
   }
 
+  suspend(): void {
+    if (this.ctx?.state === "running") void this.ctx.suspend().catch(() => {});
+  }
+
   async unlock(): Promise<void> {
     if (!this.ctx) {
       const Ctor = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;

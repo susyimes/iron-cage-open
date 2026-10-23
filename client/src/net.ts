@@ -1,4 +1,5 @@
 import type { Game } from "./game/game.ts";
+import { TOY_BUILD } from "./distribution.ts";
 import { emptyCurses, feltScale, VERSUS_CARDS } from "./game/upgrades.ts";
 import { PROTOCOL_VERSION, ROOM_IDLE_CLOSE_CODE, type PublicState, type ServerMsg } from "../../server/src/protocol.ts";
 import { targetText } from "./game/rules.ts";
@@ -39,6 +40,7 @@ export class Online {
   }
 
   connect(room: string, name: string): void {
+    if (TOY_BUILD) return;
     this.disconnect();
     this.game.startOnlineRound();
     this.request = 0;

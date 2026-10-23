@@ -41,7 +41,7 @@ export const UPGRADES: Upgrade[] = [
     name: "加力上限",
     nameEn: "MAX POWER",
     desc: "仅在你出杆时提高力度上限。抬杆角度由你控制，不改变八球判罚。",
-    icon: "/icons/power.png",
+    icon: "./icons/power.png",
     target: "self",
   },
   {
@@ -49,7 +49,7 @@ export const UPGRADES: Upgrade[] = [
     name: "白球胀大",
     nameEn: "CUE SIZE",
     desc: "你的白球变大，更好撞。太大则难进袋。",
-    icon: "/icons/size.png",
+    icon: "./icons/size.png",
     target: "self",
   },
   {
@@ -57,7 +57,7 @@ export const UPGRADES: Upgrade[] = [
     name: "球增重",
     nameEn: "HEAVY SET",
     desc: "仅在你出杆时增加球的重量，改变传力和滑行距离。换手即恢复对手的配置。",
-    icon: "/icons/mass.png",
+    icon: "./icons/mass.png",
     target: "self",
   },
   {
@@ -65,7 +65,7 @@ export const UPGRADES: Upgrade[] = [
     name: "磁铁球",
     nameEn: "MAGNET",
     desc: "你出杆后的前两秒，运动中的球会产生逐渐减弱的吸引力。停球后不再吸引。",
-    icon: "/icons/magnet.png",
+    icon: "./icons/magnet.png",
     target: "self",
   },
   {
@@ -73,7 +73,7 @@ export const UPGRADES: Upgrade[] = [
     name: "绒面打滑",
     nameEn: "SLICK FELT",
     desc: "你的回合绒面变滑，球停得很慢。叠满后近乎冰面。",
-    icon: "/icons/slick.svg",
+    icon: "./icons/slick.svg",
     target: "self",
   },
 ];
@@ -84,7 +84,7 @@ export const CURSES: Upgrade[] = [
     name: "绒面发粘",
     nameEn: "STICKY FELT",
     desc: "使坏，只对对手。对手开球时绒面变粘，球很快停下。叠满后几乎粘住。",
-    icon: "/icons/grip.svg",
+    icon: "./icons/grip.svg",
     target: "foe",
   },
   {
@@ -92,7 +92,7 @@ export const CURSES: Upgrade[] = [
     name: "彩球胀大",
     nameEn: "HUGE OBJECTS",
     desc: "使坏，只对对手。对手要打的彩球变大，路更挤。叠满后大到刚能进袋。",
-    icon: "/icons/swell.svg",
+    icon: "./icons/swell.svg",
     target: "foe",
   },
   {
@@ -100,7 +100,7 @@ export const CURSES: Upgrade[] = [
     name: "白球缩小",
     nameEn: "TINY CUE",
     desc: "使坏，只对对手。对手的白球变小，更难点到彩球。叠满后只剩一颗弹珠。",
-    icon: "/icons/shrink.svg",
+    icon: "./icons/shrink.svg",
     target: "foe",
   },
   {
@@ -108,7 +108,7 @@ export const CURSES: Upgrade[] = [
     name: "白球变轻",
     nameEn: "FEATHER CUE",
     desc: "使坏，只对对手。对手的白球变轻，撞上去几乎传不出劲。叠满后轻得像乒乓球。",
-    icon: "/icons/light.svg",
+    icon: "./icons/light.svg",
     target: "foe",
   },
 ];

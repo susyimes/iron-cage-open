@@ -1,6 +1,7 @@
 import { initializeLocale } from "./i18n.ts";
 import { Game } from "./game/game.ts";
 import { Ui } from "./ui.ts";
+import { TOY_BUILD } from "./distribution.ts";
 
 const canvas = document.getElementById("view");
 if (!(canvas instanceof HTMLCanvasElement)) throw new Error("canvas missing");
@@ -25,3 +26,14 @@ ui.bind(game, () => {
 });
 game.onHud = () => ui.paint(game.hud());
 ui.paint(game.hud());
+
+if (TOY_BUILD) {
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) return;
+    if (game.screen === "play") game.togglePause();
+    game.audio.suspend();
+  });
+  document.addEventListener("pointerdown", () => {
+    if (!document.hidden) void game.audio.unlock();
+  });
+}

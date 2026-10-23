@@ -87,3 +87,8 @@ Legacy Chinese rules and server messages are translated at explicit client
 presentation sites; protocol fields, names, card IDs and save formats stay intact.
 The club wall crest and image assets retain their original branding.
 Run `npm run test:i18n` for preference, storage, catalog and message checks.
+
+### Bilibili Toy
+
+Run `npm run package:toy` for the self-contained solo ZIP. See [Toy build and validation](docs/toy.md)
+for Python 3 requirements, package rules, local preview and platform QA boundaries.
